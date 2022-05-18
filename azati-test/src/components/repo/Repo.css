@@ -1,0 +1,12 @@
+.repo {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 25px 0;
+}
+.repo-header-name {
+    color: purple;
+    border: 1px solid purple;
+    border-radius: 10px;
+    padding: 9px;
+    
+}

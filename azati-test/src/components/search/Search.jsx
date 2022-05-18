@@ -1,17 +1,24 @@
-import { useState, useEffect, useMemo, Suspense } from "react";
+import { useState, useEffect, useMemo, Suspense, lazy } from "react";
 import fetchData from "../../api/fetchData/fetchData";
-import Repo from "../repo/Repo";
 import LazyReposLoading from "../UI/LazyReposLoading";
 import "./Search.css";
 
 const Search = () => {
 
+    const Repo = lazy(() => import('../repo/Repo'));
+
     const [repos, setRepos] = useState([]);
-    const [value, setValue] = useState("");
+    const [queryValue, setQueryValue] = useState("react");
+    const [isLoading, setIsLoading] = useState(true);
+
+    const setLoading = () => {
+        setIsLoading(true);
+        setTimeout(() => setIsLoading(false), 3000);
+      };
 
     const searchRepos = useMemo(
-        () => repos.filter((repo) => repo.name.toLowerCase().includes(value.toLowerCase())),
-        [value, repos]
+        () => repos.filter((repo) => repo.name.toLowerCase().includes(queryValue.toLowerCase())),
+        [queryValue, repos]
       );
 
     const sortRepos = (option, order) => {
@@ -25,18 +32,32 @@ const Search = () => {
         }
     }
 
+    const setQuery = (value) => {
+        setLoading();
+        setQueryValue(value)
+    }
+
     useEffect(() => {
-        fetchData().then(data => setRepos(data.items))
-        console.log(repos);
-    }, [])
+        setLoading();
+        if(queryValue) {
+        const delayDebounceFn = setTimeout(() => {
+            fetchData(queryValue).then(data => setRepos(data.items));  // debounce to avoid github error 403 because of many requests at almost same time 
+          }, 1500) 
+          return () => {
+            clearTimeout(delayDebounceFn);
+          }
+        }
+    }, [queryValue]);
 
     return (
         <div className="wrapper">
           <h1>Search Repositories</h1>
+          <span>Current query value:  </span>
           <input
             type="text"
-            placeholder="Search..."
-            onChange={(event) => setValue(event.target.value)}
+            placeholder="Query..."
+            value={queryValue}
+            onChange={(event) => setQuery(event.target.value)}
           />
           <div>
             <h3>Forks:</h3>
@@ -45,10 +66,11 @@ const Search = () => {
           </div>
           <div>
             <h3>Watchers:</h3>
-            <button onClick={() => sortRepos("watchers_count", "ASC")}>Sort by watchers ASC</button>
-            <button onClick={() => sortRepos("watchers_count", "DESC")}>Sort by watchers DESC</button>
+            <button onClick={() => sortRepos("watchers_count", "ASC")}>Sort by watchers/stars ASC</button>
+            <button onClick={() => sortRepos("watchers_count", "DESC")}>Sort by watchers/stars DESC</button>
           </div>
-           {value !== "" ? (
+          {isLoading && <LazyReposLoading />}
+           {queryValue !== "" ? (
             <div>
               {searchRepos.map(repo =>
                 <Suspense key={repo.id} fallback={<LazyReposLoading />}>

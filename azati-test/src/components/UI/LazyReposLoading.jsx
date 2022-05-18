@@ -2,7 +2,7 @@ import "./LazyReposLoading.css";
 
 function LazyReposLoading() {
     return (
-      <div className="wrapper">
+      <div className="spinnerWrapper">
         <div className="ldsRoller">
           <div />
           <div />
