@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/azati-test/static/css/main.6ee4819b.css",
-    "main.js": "/azati-test/static/js/main.add0f1cf.js",
+    "main.css": "/azati-test/static/css/main.d074494b.css",
+    "main.js": "/azati-test/static/js/main.6c8d873b.js",
     "static/css/682.0c187d35.chunk.css": "/azati-test/static/css/682.0c187d35.chunk.css",
     "static/js/682.176e28e1.chunk.js": "/azati-test/static/js/682.176e28e1.chunk.js",
     "static/js/787.f914af26.chunk.js": "/azati-test/static/js/787.f914af26.chunk.js",
     "index.html": "/azati-test/index.html",
-    "main.6ee4819b.css.map": "/azati-test/static/css/main.6ee4819b.css.map",
-    "main.add0f1cf.js.map": "/azati-test/static/js/main.add0f1cf.js.map",
+    "main.d074494b.css.map": "/azati-test/static/css/main.d074494b.css.map",
+    "main.6c8d873b.js.map": "/azati-test/static/js/main.6c8d873b.js.map",
     "682.0c187d35.chunk.css.map": "/azati-test/static/css/682.0c187d35.chunk.css.map",
     "682.176e28e1.chunk.js.map": "/azati-test/static/js/682.176e28e1.chunk.js.map",
     "787.f914af26.chunk.js.map": "/azati-test/static/js/787.f914af26.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6ee4819b.css",
-    "static/js/main.add0f1cf.js"
+    "static/css/main.d074494b.css",
+    "static/js/main.6c8d873b.js"
   ]
 }
