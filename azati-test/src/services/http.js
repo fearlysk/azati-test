@@ -18,3 +18,4 @@ const http = async (url, method, data) => {
     }
   };
   export default http;
+  

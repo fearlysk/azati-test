@@ -17,7 +17,7 @@ const Search = () => {
       };
 
     const searchRepos = useMemo(
-        () => repos.filter((repo) => repo.name.toLowerCase().includes(queryValue.toLowerCase())),
+        () => repos ? repos.filter((repo) => repo.name.toLowerCase().includes(queryValue.toLowerCase())) : [],
         [queryValue, repos]
       );
 
@@ -34,7 +34,7 @@ const Search = () => {
 
     const setQuery = (value) => {
         setLoading();
-        setQueryValue(value)
+        setQueryValue(value);
     }
 
     useEffect(() => {
@@ -51,6 +51,7 @@ const Search = () => {
 
     return (
         <div className="wrapper">
+          {window.navigator.onLine ? null : <h1>No internet connection...</h1>}
           <h1>Search Repositories</h1>
           <span>Current query value:  </span>
           <input
@@ -65,7 +66,7 @@ const Search = () => {
             <button onClick={() => sortRepos("forks_count", "DESC")}>Sort by forks DESC</button>
           </div>
           <div>
-            <h3>Watchers:</h3>
+            <h3>Watchers/Stars:</h3>
             <button onClick={() => sortRepos("watchers_count", "ASC")}>Sort by watchers/stars ASC</button>
             <button onClick={() => sortRepos("watchers_count", "DESC")}>Sort by watchers/stars DESC</button>
           </div>

@@ -11,7 +11,10 @@ const Repo = (props) => {
                 <div className="repo-header-forks">Forks: {repo.forks_count}</div>
             </div>
             <div className="repo-last-commit">Latest commit: {repo.updated_at}</div>
-            <a href={repo.html_url} className="repo-link">Repository link: {repo.html_url}</a>
+            <div className="repo-url">
+            <span>Repository link: </span>
+            <a href={repo.html_url} className="repo-link">{repo.html_url}</a>
+            </div>
         </div>
     );
 };
