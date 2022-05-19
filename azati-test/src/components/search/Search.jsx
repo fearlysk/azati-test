@@ -42,7 +42,7 @@ const Search = () => {
         if(queryValue) {
         const delayDebounceFn = setTimeout(() => {
             fetchData(queryValue).then(data => setRepos(data.items));  // debounce to avoid github error 403 because of many requests at almost same time 
-          }, 1500) 
+          }, 1000) 
           return () => {
             clearTimeout(delayDebounceFn);
           }
@@ -60,17 +60,20 @@ const Search = () => {
             value={queryValue}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <div>
-            <h3>Forks:</h3>
-            <button onClick={() => sortRepos("forks_count", "ASC")}>Sort by forks ASC</button>
-            <button onClick={() => sortRepos("forks_count", "DESC")}>Sort by forks DESC</button>
-          </div>
-          <div>
-            <h3>Watchers/Stars:</h3>
-            <button onClick={() => sortRepos("watchers_count", "ASC")}>Sort by watchers/stars ASC</button>
-            <button onClick={() => sortRepos("watchers_count", "DESC")}>Sort by watchers/stars DESC</button>
+          <div className="sorting-section">
+            <div className="sorting-section_item">
+              <h3>Forks:</h3>
+              <button className="sorting-section_item-btn" onClick={() => sortRepos("forks_count", "ASC")}>Sort by forks ASC</button>
+              <button className="sorting-section_item-btn" onClick={() => sortRepos("forks_count", "DESC")}>Sort by forks DESC</button>
+            </div>
+            <div className="sorting-section_item">
+              <h3>Watchers/Stars:</h3>
+              <button className="sorting-section_item-btn" onClick={() => sortRepos("watchers_count", "ASC")}>Sort by watchers/stars ASC</button>
+              <button className="sorting-section_item-btn" onClick={() => sortRepos("watchers_count", "DESC")}>Sort by watchers/stars DESC</button>
+            </div>
           </div>
           {isLoading && <LazyReposLoading />}
+          {searchRepos.length && queryValue ? <h1>Results: </h1> : <h1>No Repositories Found</h1>}
            {queryValue !== "" ? (
             <div>
               {searchRepos.map(repo =>
