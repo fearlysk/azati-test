@@ -11,11 +11,6 @@ const Search = () => {
     const [queryValue, setQueryValue] = useState("react");
     const [isLoading, setIsLoading] = useState(true);
 
-    const setLoading = () => {
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 3000);
-      };
-
     const searchRepos = useMemo(
         () => repos ? repos.filter((repo) => repo.name.toLowerCase().includes(queryValue.toLowerCase())) : [],
         [queryValue, repos]
@@ -33,16 +28,19 @@ const Search = () => {
     }
 
     const setQuery = (value) => {
-        setLoading();
         setQueryValue(value);
     }
 
     useEffect(() => {
-        setLoading();
-        if(queryValue) {
-        const delayDebounceFn = setTimeout(() => {
-            fetchData(queryValue).then(data => setRepos(data.items));  // debounce to avoid github error 403 because of many requests at almost same time 
-          }, 1000) 
+      if (!queryValue) {
+        setIsLoading(false);
+      }
+      if (queryValue) {
+        setIsLoading(true);
+          const delayDebounceFn = setTimeout(() => {
+            fetchData(queryValue).then(data => setRepos(data.items)).then(setIsLoading(false))  // debounce to avoid github error 403 because of many requests at almost same time 
+          }, 1000)
+          console.log(searchRepos);
           return () => {
             clearTimeout(delayDebounceFn);
           }
@@ -53,7 +51,7 @@ const Search = () => {
         <div className="wrapper">
           {window.navigator.onLine ? null : <h1>No internet connection...</h1>}
           <h1>Search Repositories</h1>
-          <span>Current query value:  </span>
+          <span>Current query value:</span>
           <input
             type="text"
             placeholder="Query..."
@@ -72,8 +70,7 @@ const Search = () => {
               <button className="sorting-section_item-btn" onClick={() => sortRepos("watchers_count", "DESC")}>Sort by watchers/stars DESC</button>
             </div>
           </div>
-          {isLoading && <LazyReposLoading />}
-          {searchRepos.length && queryValue ? <h1>Results: </h1> : <h1>No Repositories Found</h1>}
+          {isLoading ? <LazyReposLoading /> : null}
            {queryValue !== "" ? (
             <div>
               {searchRepos.map(repo =>
